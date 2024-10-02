@@ -7,8 +7,8 @@ import seaborn as sns
 st.title('Analisis Data Peminjaman Sepeda - Bike Sharing')
 
 # Load day.csv and hour.csv datasets
-day_df = pd.read_csv('D:/College/BANGKIT MSIB/submission/data/day.csv')
-hour_df = pd.read_csv('D:/College/BANGKIT MSIB/submission/data/hour.csv')
+day_df = pd.read_csv('/submission/day.csv')
+hour_df = pd.read_csv('/submission/hour.csv')
 
 # Merge the two datasets on 'dteday' with suffixes
 combined_df = pd.merge(hour_df, day_df, on='dteday', suffixes=('_hour', '_day'))
