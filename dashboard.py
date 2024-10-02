@@ -13,25 +13,25 @@ hour_df = pd.read_csv('hour.csv')
 # Merge the two datasets on 'dteday' with suffixes
 combined_df = pd.merge(hour_df, day_df, on='dteday', suffixes=('_hour', '_day'))
 
-# Sidebar for dataset selection
+# Sidebar untuk dataset yang ingin dipilih
 st.sidebar.title('Pilih Dataset')
 dataset_choice = st.sidebar.selectbox("Pilih Dataset", ["Day", "Hour"])
 
-# Business Questions
+# Menampilkan pertanyaan di sidebar
 st.sidebar.title("Pertanyaan Bisnis")
 st.sidebar.write("1. Apa faktor-faktor yang mempengaruhi jumlah peminjaman sepeda?")
 st.sidebar.write("2. Bagaimana tren jumlah peminjaman sepeda dari hari ke hari?")
 
-# Display the dataset based on selection
+# Menampilkan dataset sesuai pilihan
 if dataset_choice == "Day":
     st.write("Dataset Day")
     st.write(day_df.head())
     
-    # Visualizations for Day dataset
+    # Visualisasi data untuk dataset Day
     st.sidebar.title("Visualisasi")
     viz_choice = st.sidebar.selectbox("Pilih Visualisasi", ["Jumlah Peminjaman per Hari", "Hubungan Cuaca dan Jumlah Peminjaman", "RFM Analysis"])
 
-    # Plot 1: Jumlah Peminjaman Sepeda per Hari
+    # Jumlah Peminjaman Sepeda per Hari
     if viz_choice == "Jumlah Peminjaman per Hari":
         st.write("Jumlah Peminjaman Sepeda per Hari")
         plt.figure(figsize=(10, 6))
@@ -42,7 +42,7 @@ if dataset_choice == "Day":
         plt.ylabel("Jumlah Peminjaman")
         st.pyplot(plt)
 
-    # Plot 2: Hubungan Cuaca dan Jumlah Peminjaman
+    # Hubungan Cuaca dan Jumlah Peminjaman
     elif viz_choice == "Hubungan Cuaca dan Jumlah Peminjaman":
         st.write("Hubungan Cuaca dan Jumlah Peminjaman")
         plt.figure(figsize=(10, 6))
@@ -52,7 +52,7 @@ if dataset_choice == "Day":
         plt.ylabel("Jumlah Peminjaman")
         st.pyplot(plt)
 
-    # RFM Analysis
+    # RFM
     elif viz_choice == "RFM Analysis":
         st.write("RFM Analysis")
         rfm_df = day_df[['cnt', 'dteday']].copy()
@@ -63,7 +63,7 @@ if dataset_choice == "Day":
 
         st.write(rfm_df)
 
-        # Visualization of RFM
+        # Visualisasi data dari RFM
         plt.figure(figsize=(10, 6))
         sns.scatterplot(data=rfm_df, x='Recency', y='Frequency', size='Monetary', sizes=(20, 200), alpha=0.5)
         plt.title("RFM Analysis")
@@ -75,11 +75,11 @@ elif dataset_choice == "Hour":
     st.write("Dataset Hour")
     st.write(hour_df.head())
 
-    # Visualizations for Hour dataset
+    # Visualisasi data untuk dataset Hour
     st.sidebar.title("Visualisasi")
     viz_choice = st.sidebar.selectbox("Pilih Visualisasi", ["Jumlah Peminjaman per Jam"])
 
-    # Plot 3: Jumlah Peminjaman Sepeda per Jam
+    # Jumlah Peminjaman Sepeda per Jam
     if viz_choice == "Jumlah Peminjaman per Jam":
         st.write("Jumlah Peminjaman Sepeda per Jam")
         plt.figure(figsize=(10, 6))
@@ -90,5 +90,5 @@ elif dataset_choice == "Hour":
         plt.ylabel("Jumlah Peminjaman")
         st.pyplot(plt)
 
-# Footer info
+# Info di Footer
 st.sidebar.write("Paskalis Reynaldy Elroy Gabriel m296b4ky3479") 
