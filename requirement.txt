@@ -49,6 +49,6 @@ urllib3==2.2.3
 watchdog==5.0.3
 streamlit
 pandas
-matplotlib
+matplotlib==3.6.0
 numpy
 seaborn
