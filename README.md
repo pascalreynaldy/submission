@@ -1,9 +1,11 @@
-# Submission
+# Submission 
 
-# Cara Menjalankan Dashboard di Streamlit
+# Setup Environment
+mkdir submission
+cd submission
+pipenv install
+pipenv shell
+pip install -r requirements.txt
 
-1. Pastikan semua pustaka diinstal dengan menjalankan:
-
-2. Jalankan dashboard dengan perintah berikut:
-
-3. Buka browser dan akses link yang ditampilkan untuk melihat dashboard.
+# Run Streamlit App
+streamlit run dashboard.py
