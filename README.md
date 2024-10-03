@@ -1,4 +1,4 @@
-# submission
+# Submission
 
 # Cara Menjalankan Dashboard di Streamlit
 
