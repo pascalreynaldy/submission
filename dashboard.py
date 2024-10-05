@@ -8,8 +8,8 @@ import matplotlib.dates as mdates
 st.title('Analisis Data Peminjaman Sepeda - Bike Sharing')
 
 # Load day.csv and hour.csv datasets
-day_df = pd.read_csv('D:/College/BANGKIT MSIB/submission/data/day.csv')
-hour_df = pd.read_csv('D:/College/BANGKIT MSIB/submission/data/hour.csv')
+day_df = pd.read_csv('day.csv')
+hour_df = pd.read_csv('hour.csv')
 
 # Convert 'dteday' column to datetime format
 day_df['dteday'] = pd.to_datetime(day_df['dteday'])
