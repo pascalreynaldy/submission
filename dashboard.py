@@ -3,13 +3,15 @@ import streamlit as st
 import matplotlib.pyplot as plt
 import seaborn as sns
 import matplotlib.dates as mdates
+from sklearn.cluster import KMeans
+from sklearn.preprocessing import StandardScaler
 
 # Title for the Streamlit app
 st.title('Analisis Data Peminjaman Sepeda - Bike Sharing')
 
 # Load day.csv and hour.csv datasets
-day_df = pd.read_csv('day.csv')
-hour_df = pd.read_csv('hour.csv')
+day_df = pd.read_csv('../data/day.csv')
+hour_df = pd.read_csv('../data/hour.csv')
 
 # Convert 'dteday' column to datetime format
 day_df['dteday'] = pd.to_datetime(day_df['dteday'])
@@ -48,7 +50,7 @@ if dataset_choice == "Day":
 
     # Visualizations for Day dataset
     st.sidebar.title("Visualisasi")
-    viz_choice = st.sidebar.selectbox("Pilih Visualisasi", ["Jumlah Peminjaman per Hari", "Hubungan Cuaca dan Jumlah Peminjaman", "RFM Analysis"])
+    viz_choice = st.sidebar.selectbox("Pilih Visualisasi", ["Jumlah Peminjaman per Hari", "Hubungan Cuaca dan Jumlah Peminjaman", "Cluster Analysis"])
 
     # Plot 1: Jumlah Peminjaman Sepeda per Hari
     if viz_choice == "Jumlah Peminjaman per Hari":
@@ -82,24 +84,36 @@ if dataset_choice == "Day":
         plt.grid(True)
         st.pyplot(plt)
 
-    # RFM Analysis
-    elif viz_choice == "RFM Analysis":
-        st.write("RFM Analysis")
-        rfm_df = filtered_day_df[['cnt', 'dteday']].copy()
-        rfm_df['Recency'] = (rfm_df['dteday'].max() - rfm_df['dteday']).dt.days
-        rfm_df['Frequency'] = rfm_df['cnt']
-        rfm_df['Monetary'] = rfm_df['cnt'] * filtered_day_df['registered']
+    # Cluster Analysis
+    elif viz_choice == "Cluster Analysis":
+        st.write("Cluster Analysis")
 
-        st.write(rfm_df)
+        if filtered_day_df.empty:
+            st.warning("Data tidak tersedia untuk analisis cluster.")
+        else:
+            # Prepare data for clustering
+            clustering_df = filtered_day_df[['temp', 'hum', 'windspeed', 'cnt']].copy()
 
-        # Visualization of RFM
-        plt.figure(figsize=(10, 6))
-        sns.scatterplot(data=rfm_df, x='Recency', y='Frequency', size='Monetary', sizes=(20, 200), alpha=0.5, palette='coolwarm')
-        plt.title("RFM Analysis", fontsize=14, fontweight='bold')
-        plt.xlabel("Recency (days)", fontsize=12)
-        plt.ylabel("Frequency", fontsize=12)
-        plt.grid(True)
-        st.pyplot(plt)
+            # Standardize the features
+            scaler = StandardScaler()
+            clustering_scaled = scaler.fit_transform(clustering_df)
+
+            # Perform KMeans clustering
+            kmeans = KMeans(n_clusters=3, random_state=42)
+            clustering_df['Cluster'] = kmeans.fit_predict(clustering_scaled)
+
+            # Plot clustering results
+            plt.figure(figsize=(10, 6))
+            sns.scatterplot(data=clustering_df, x='temp', y='cnt', hue='Cluster', palette='Set2', alpha=0.7)
+            plt.title("Cluster Analysis (Temperatur vs Jumlah Peminjaman)", fontsize=14, fontweight='bold')
+            plt.xlabel("Temperatur", fontsize=12)
+            plt.ylabel("Jumlah Peminjaman", fontsize=12)
+            plt.grid(True)
+            st.pyplot(plt)
+
+            # Display cluster centers
+            st.write("Pusat Cluster:")
+            st.write(kmeans.cluster_centers_)
 
 elif dataset_choice == "Hour":
     st.write("Dataset Hour")
