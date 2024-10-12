@@ -17,8 +17,10 @@ hour_df = pd.read_csv('hour.csv')
 day_df['dteday'] = pd.to_datetime(day_df['dteday'])
 hour_df['dteday'] = pd.to_datetime(hour_df['dteday'])
 
-# Merge the two datasets on 'dteday' with suffixes
+# Mapping kategori cuaca
+weather_mapping = {1: 'Cerah', 2: 'Mendung', 3: 'Hujan'}
 combined_df = pd.merge(hour_df, day_df, on='dteday', suffixes=('_hour', '_day'))
+combined_df['weathersit_day'] = combined_df['weathersit_day'].map(weather_mapping)
 
 # Sidebar for dataset selection
 st.sidebar.title('Pilih Dataset')
